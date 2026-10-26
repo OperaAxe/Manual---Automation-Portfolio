@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shop Demo — QA Playbook</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; }
+    body { max-width: 920px; margin: 2rem auto; padding: 0 1rem; color: #17212b; background: #f6f8fb; }
+    h1, h2 { line-height: 1.2; }
+    .intro, .panel, article { background: white; border: 1px solid #d8e0e8; border-radius: 10px; padding: 1rem; margin: 1rem 0; }
+    .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    article { margin: 0; }
+    button { cursor: pointer; border: 0; border-radius: 7px; padding: .6rem .85rem; background: #174a72; color: white; }
+    button:focus-visible, input:focus-visible { outline: 3px solid #e0a52b; outline-offset: 2px; }
+    input { display: block; width: min(100%, 28rem); padding: .65rem; margin: .35rem 0 1rem; box-sizing: border-box; }
+    li { margin: .65rem 0; }
+    .muted { color: #52606d; }
+    [role="alert"] { color: #a12622; }
+    [data-testid="order-confirmation"] { border-left: 4px solid #16804a; padding: .75rem; background: #eefaf3; }
+  </style>
+</head>
+<body>
+  <header class="intro">
+    <h1>Small Shop</h1>
+    <p>This is a local demo for practising manual QA and Playwright. It does not process payments or send orders to a real store.</p>
+  </header>
+
+  <main>
+    <section aria-labelledby="products-heading">
+      <h2 id="products-heading">Products</h2>
+      <div class="products" data-testid="product-list"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="cart-heading">
+      <h2 id="cart-heading">Your cart</h2>
+      <ul data-testid="cart-items" aria-live="polite"></ul>
+      <p>Subtotal: <strong data-testid="cart-total">$0.00</strong></p>
+    </section>
+
+    <section class="panel" aria-labelledby="checkout-heading">
+      <h2 id="checkout-heading">Checkout</h2>
+      <form data-testid="checkout-form">
+        <label for="customer-name">Full name</label>
+        <input id="customer-name" name="customerName" autocomplete="name" required>
+        <label for="customer-email">Email address</label>
+        <input id="customer-email" name="customerEmail" type="email" autocomplete="email" required>
+        <button type="submit" data-testid="place-order">Place demo order</button>
+      </form>
+      <p data-testid="checkout-error" role="alert"></p>
+      <p data-testid="order-confirmation" role="status" hidden></p>
+    </section>
+  </main>
+
+  <script>
+    const products = [
+      { id: "notebook", name: "Notebook", priceCents: 850 },
+      { id: "pen", name: "Precision pen", priceCents: 200 }
+    ];
+    const cart = new Map();
+    const productList = document.querySelector('[data-testid="product-list"]');
+    const cartItems = document.querySelector('[data-testid="cart-items"]');
+    const cartTotal = document.querySelector('[data-testid="cart-total"]');
+    const checkoutForm = document.querySelector('[data-testid="checkout-form"]');
+    const checkoutError = document.querySelector('[data-testid="checkout-error"]');
+    const confirmation = document.querySelector('[data-testid="order-confirmation"]');
+
+    function money(cents) {
+      return '$' + (cents / 100).toFixed(2);
+    }
+
+    function totalCents() {
+      return [...cart.entries()].reduce((total, [id, quantity]) => {
+        const product = products.find((item) => item.id === id);
+        return total + product.priceCents * quantity;
+      }, 0);
+    }
+
+    function renderProducts() {
+      productList.replaceChildren();
+      products.forEach((product) => {
+        const card = document.createElement('article');
+        card.dataset.testid = 'product-card';
+        const name = document.createElement('h3');
+        name.textContent = product.name;
+        const price = document.createElement('p');
+        price.textContent = money(product.priceCents);
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.dataset.testid = 'add-' + product.id;
+        button.textContent = 'Add ' + product.name;
+        button.addEventListener('click', () => {
+          cart.set(product.id, (cart.get(product.id) || 0) + 1);
+          confirmation.hidden = true;
+          renderCart();
+        });
+        card.append(name, price, button);
+        productList.append(card);
+      });
+    }
+
+    function renderCart() {
+      cartItems.replaceChildren();
+      cart.forEach((quantity, id) => {
+        const product = products.find((item) => item.id === id);
+        const row = document.createElement('li');
+        row.dataset.testid = 'cart-item';
+        const label = document.createElement('span');
+        label.textContent = product.name + ' × ' + quantity;
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.dataset.testid = 'remove-' + id;
+        remove.textContent = 'Remove ' + product.name;
+        remove.addEventListener('click', () => {
+          cart.delete(id);
+          renderCart();
+        });
+        row.append(label, document.createTextNode(' '), remove);
+        cartItems.append(row);
+      });
+      cartTotal.textContent = money(totalCents());
+    }
+
+    checkoutForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      checkoutError.textContent = '';
+      if (cart.size === 0) {
+        checkoutError.textContent = 'Add at least one item before checkout.';
+        return;
+      }
+      const customerName = document.querySelector('#customer-name').value.trim();
+      confirmation.textContent = 'Order recorded for ' + customerName + '. Demo total: ' + money(totalCents()) + '. No payment was taken.';
+      confirmation.hidden = false;
+      cart.clear();
+      renderCart();
+    });
+
+    renderProducts();
+    renderCart();
+  </script>
+</body>
+</html>
