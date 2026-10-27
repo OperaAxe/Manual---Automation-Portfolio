@@ -1,46 +1,127 @@
-# Manual QA → Automation Playbook
+<div align="center">
+  <img src="assets/qa-stickers.svg" alt="Manual QA to automation: test, investigate, report, improve" width="100%" />
+</div>
 
+<div align="center">
+
+[![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Playwright](https://img.shields.io/badge/Playwright-Python-2EAD33?logo=playwright&logoColor=white)](https://playwright.dev/python/)
+[![Manual QA](https://img.shields.io/badge/Manual_QA-Exploratory-7C3AED)](#demoqa-elements-manual-testing)
 [![CI](https://github.com/OperaAxe/Manual---Automation-Portfolio/actions/workflows/playbook-tests.yml/badge.svg)](https://github.com/OperaAxe/Manual---Automation-Portfolio/actions/workflows/playbook-tests.yml)
 
-A small local storefront for practising how a manual test idea becomes a repeatable Playwright check. The fixture is included in the repository, so the scenarios do not depend on a third-party site being available.
+</div>
 
-This is not a real shop. It does not take payments or create real orders.
+# Manual QA → Automation
 
-## Try a cart scenario
+This is my main QA portfolio repository. It brings together manual testing work, bug reports, and small Playwright checks in one place.
 
-The storefront has two products:
+The point is to show how a test starts with a question about product behaviour, how the result is documented, and where automation can make the check repeatable.
 
-| Product | Price |
+## What's inside
+
+| Area | What you'll find |
+|---|---|
+| **DemoQA manual testing** | Excel test pack for the [Elements section](https://demoqa.com/elements), with 30 scenarios and a defect log |
+| **Test planning** | Scope, approach, test data, and current limitations |
+| **Bug reporting** | Reproduction steps, expected vs actual results, severity, evidence notes, and triage state |
+| **Playwright automation** | Runnable tests for a small local storefront included in this repo |
+| **CI** | GitHub Actions runs the local storefront suite on pushes and pull requests |
+
+## DemoQA Elements manual testing
+
+**Target:** [demoqa.com/elements](https://demoqa.com/elements)  
+**Initial test pass:** 27 October 2026
+
+[**Open the Excel test pack**](manual-testing/DemoQA_Elements_Manual_Testing.xlsx) · [Test plan](docs/demoqa-elements-test-plan.md) · [Bug report template](docs/bug-report-template.md)
+
+The workbook has a summary dashboard, 30 manual test scenarios, and a defect log.
+
+| Result | Count |
 |---|---:|
-| Notebook | $8.50 |
-| Precision pen | $2.00 |
+| Scenarios written | 30 |
+| Passed in the observed session | 17 |
+| Failed observations | 7 |
+| Not run yet | 6 |
 
-Add both products and the subtotal should be **$10.50**. Remove the notebook and the pen should remain, with a subtotal of **$2.00**. The second assertion matters: removing one item should not silently remove another.
+The seven logged observations cover visible copy problems, email-validation feedback, and DOM-level accessibility risks. Some accessibility items still need checking with the browser accessibility tree and assistive technology before they should be treated as fully confirmed.
 
-## What the tests cover
+**Thirty test cases do not mean thirty bugs.** The workbook keeps unrun tests separate from failures, and it does not count browser-tool timeouts as product defects. DemoQA is a public practice site; its deliberately broken image example is expected test data, not a defect in the site.
 
-- Both products render in the storefront.
-- Adding a product updates the cart and subtotal.
-- Adding the same product twice updates its quantity.
-- Removing one product leaves the other in the cart.
-- Required customer fields prevent an empty checkout.
-- An empty cart cannot create a demo order.
-- A valid demo checkout shows a confirmation and clears the cart.
+## Playwright practice project
 
-## Run it
+The automation suite currently targets the **local storefront in `demo/storefront.html`**, not DemoQA. Keeping the target local makes these checks repeatable without relying on a third-party site being online.
+
+Current checks cover product rendering, cart totals, quantity changes, removing an item without removing another item, and checkout-form behavior. It is a learning project, not a real store: it takes no payments and creates no real orders.
+
+### Run it locally
 
 Requires Python 3.11 or newer.
 
 ```bash
 python -m venv .venv
+```
+
+Activate the environment:
+
+```bash
+# macOS / Linux
 source .venv/bin/activate
+
+# Windows PowerShell
+.venv\Scripts\Activate.ps1
+```
+
+Install dependencies and run the tests:
+
+```bash
 python -m pip install -r requirements.txt
 python -m playwright install chromium
 pytest -v
 ```
 
-The storefront is local HTML and does not need an account, API key, or external network connection.
+Run the small smoke check on the local storefront:
 
-## Next additions
+```bash
+python first_test.py
+```
 
-The playbook is still in progress. Planned additions include keyboard-only checks, direct tests for cart calculations, and more useful screenshot or trace evidence for failed browser runs.
+## How I approach a test
+
+- Decide what behaviour matters before clicking around.
+- Use realistic but safe test data.
+- Check the resulting state, not just whether a button responded.
+- Read data back after a rejected or destructive action when a side effect is possible.
+- Write the exact steps and evidence another person would need to reproduce an issue.
+- Treat an unexplained failure as something to investigate, not automatic proof of a product bug.
+
+## Repository map
+
+```text
+.
+├── assets/
+│   └── qa-stickers.svg
+├── demo/
+│   └── storefront.html
+├── docs/
+│   ├── bug-report-template.md
+│   └── demoqa-elements-test-plan.md
+├── manual-testing/
+│   ├── README.md
+│   └── DemoQA_Elements_Manual_Testing.xlsx
+├── tests/
+│   └── test_storefront.py
+├── first_test.py
+├── pytest.ini
+└── requirements.txt
+```
+
+## Current limits
+
+The DemoQA pack is an initial pass, not a full audit. Six scenarios still need execution, and several accessibility observations need a second check. The Playwright suite covers the local fixture only. Test results will change as coverage grows, and the repository will be updated as new checks and evidence are added.
+
+---
+
+<div align="center">
+  <strong>Good testing makes the next decision easier.</strong><br/>
+  Christian David · QA Engineering · Manual Testing → Automation
+</div>
