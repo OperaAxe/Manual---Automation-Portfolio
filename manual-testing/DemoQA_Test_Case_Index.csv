@@ -1,0 +1,31 @@
+Test ID,Area,Scenario,Status,Defect ID
+TC-001,Navigation,Elements landing page opens,PASS,
+TC-002,Text Box,Submit all optional fields empty,PASS,
+TC-003,Text Box,Submit valid sample data and inspect echoed values,PASS,
+TC-004,Text Box,Permanent Address output label spelling,FAIL,DQA-001
+TC-005,Text Box,Output label punctuation consistency,FAIL,DQA-002
+TC-006,Text Box,Invalid email gives visible feedback,FAIL,DQA-003
+TC-007,Text Box / Accessibility,Permanent Address has a programmatic name,FAIL,DQA-004
+TC-008,Check Box,Check Box page loads,PASS,
+TC-009,Check Box,Selecting Home selects descendants,NOT RUN,
+TC-010,Radio Button,Selecting Yes updates result,PASS,
+TC-011,Radio Button,Radio selection is exclusive,PASS,
+TC-012,Radio Button,No option disabled state is documented,PASS,
+TC-013,Web Tables,Table and Add control render,PASS,
+TC-014,Web Tables,Add opens record form,PASS,
+TC-015,Web Tables,Empty new-record form validates required fields,PASS,
+TC-016,Web Tables,Create and search unique record,NOT RUN,
+TC-017,Web Tables,Edit record persists,NOT RUN,
+TC-018,Web Tables,Delete removes only selected row,NOT RUN,
+TC-019,Buttons,Single click confirmation,PASS,
+TC-020,Buttons,Double-click confirmation,PASS,
+TC-021,Buttons,Right-click confirmation,PASS,
+TC-022,Links,Created API link displays 201 response,PASS,
+TC-023,Links,Response text spells 'status' correctly,FAIL,DQA-005
+TC-024,Links,Home link opens in a new tab,NOT RUN,
+TC-025,Broken Links - Images,Intentional broken-image example is documented,PASS,
+TC-026,Broken Links - Images,Broken-link navigation result,NOT RUN,
+TC-027,Upload and Download,Upload and download controls are present,PASS,
+TC-028,Upload and Download / Accessibility,File input has a programmatic label,FAIL,DQA-006
+TC-029,Dynamic Properties,Delayed button state updates,PASS,
+TC-030,Global / Accessibility,Header home/logo link has an accessible name,FAIL,DQA-007

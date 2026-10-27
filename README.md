@@ -21,7 +21,7 @@ The point is to show how a test starts with a question about product behaviour, 
 
 | Area | What you'll find |
 |---|---|
-| **DemoQA manual testing** | Excel test pack for the [Elements section](https://demoqa.com/elements), with 30 scenarios and a defect log |
+| **DemoQA manual testing** | 30 test scenarios for the [Elements section](https://demoqa.com/elements), plus a separate defect log |
 | **Test planning** | Scope, approach, test data, and current limitations |
 | **Bug reporting** | Reproduction steps, expected vs actual results, severity, evidence notes, and triage state |
 | **Playwright automation** | Runnable tests for a small local storefront included in this repo |
@@ -32,9 +32,12 @@ The point is to show how a test starts with a question about product behaviour, 
 **Target:** [demoqa.com/elements](https://demoqa.com/elements)  
 **Initial test pass:** 27 October 2026
 
-[**Open the Excel test pack**](manual-testing/DemoQA_Elements_Manual_Testing.xlsx) · [Test plan](docs/demoqa-elements-test-plan.md) · [Bug report template](docs/bug-report-template.md)
+- [Test case index (CSV)](manual-testing/DemoQA_Test_Case_Index.csv)
+- [Defect log (CSV)](manual-testing/DemoQA_Defect_Log.csv)
+- [Test plan](docs/demoqa-elements-test-plan.md)
+- [Bug report template](docs/bug-report-template.md)
 
-The workbook has a summary dashboard, 30 manual test scenarios, and a defect log.
+The Excel workbook with the full test steps, expected and actual results, notes, dashboard, and defect details is attached with this project handoff. The CSV files in the repository make the case list and defect log reviewable directly on GitHub.
 
 | Result | Count |
 |---|---:|
@@ -107,7 +110,8 @@ python first_test.py
 │   └── demoqa-elements-test-plan.md
 ├── manual-testing/
 │   ├── README.md
-│   └── DemoQA_Elements_Manual_Testing.xlsx
+│   ├── DemoQA_Test_Case_Index.csv
+│   └── DemoQA_Defect_Log.csv
 ├── tests/
 │   └── test_storefront.py
 ├── first_test.py

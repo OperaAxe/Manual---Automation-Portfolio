@@ -1,0 +1,8 @@
+Defect ID,Area,Title,Type,Severity,Status,Source URL,Evidence / Confidence
+DQA-001,Text Box,"Output label typo: Permananet Address",Functional / Content,Low,Open,https://demoqa.com/text-box,"Visible typo in submitted-value output; repeat on a fresh run."
+DQA-002,Text Box,"Inconsistent whitespace before output-label colons",UI / Content,Low,Open,https://demoqa.com/text-box,"Address labels have a space before the colon while Name and Email do not."
+DQA-003,Text Box,"Invalid email rejected without visible feedback",Validation / UX,Medium,Open,https://demoqa.com/text-box,"No output and no visible validation message observed after invalid email submission; repeat to confirm."
+DQA-004,Text Box,"Permanent Address lacks a programmatic name",Accessibility,Medium,Needs verification,https://demoqa.com/text-box,"DOM observation: no associated label, placeholder, or aria-label. Confirm using accessibility tree and screen reader."
+DQA-005,Links,"Response text misspells status as staus",UI / Content,Low,Open,https://demoqa.com/links,"Observed response copy includes 'staus 201'."
+DQA-006,Upload and Download,"File input has no associated accessible label",Accessibility,Medium,Needs verification,https://demoqa.com/upload-download,"DOM observation: no associated label or aria naming attribute. Confirm with assistive technology."
+DQA-007,Global / Accessibility,"Header home/logo link has no accessible name",Accessibility,Medium,Needs verification,https://demoqa.com/elements,"Captured DOM had empty image alt text and no other naming attribute on the link. Verify computed accessible name."

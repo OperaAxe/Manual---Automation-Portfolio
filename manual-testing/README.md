@@ -1,9 +1,12 @@
 # Manual testing artifacts
 
-The workbook in this folder covers the **Elements** section of [DemoQA](https://demoqa.com/elements).
+This folder contains the reviewable data exports for the [DemoQA Elements](https://demoqa.com/elements) exercise.
 
-- [DemoQA_Elements_Manual_Testing.xlsx](DemoQA_Elements_Manual_Testing.xlsx) — dashboard, 30 test cases, 7 initial defect observations, and scope/method notes.
-- [DemoQA Elements test plan](../docs/demoqa-elements-test-plan.md)
+- [Test case index](DemoQA_Test_Case_Index.csv) — 30 scenarios and their execution state.
+- [Defect log](DemoQA_Defect_Log.csv) — seven initial observations with severity, source URL, and verification notes.
+- [Test plan](../docs/demoqa-elements-test-plan.md)
 - [Bug report template](../docs/bug-report-template.md)
 
-The workbook reflects an initial pass, not a completed audit. Six scenarios are marked Not Run. The seven logged findings include visible copy/validation issues and DOM-level accessibility risks; accessibility items need a second check before final claims are made. The count of test cases is not a bug count.
+The full Excel workbook is provided separately with the handoff. The CSV files are kept here so the test case index and defect log can be reviewed directly on GitHub.
+
+This is an initial pass, not a full audit. Six scenarios remain unrun, and accessibility observations need further verification. Thirty test cases do not mean thirty bugs.
