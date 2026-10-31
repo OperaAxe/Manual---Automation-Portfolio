@@ -1,33 +1,25 @@
 """Browser tests against the local demo storefront; no production account is used."""
 
-from pathlib import Path
+from __future__ import annotations
 
 import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import expect
 
 
-DEMO_URL = (Path(__file__).resolve().parents[1] / "demo" / "storefront.html").as_uri()
-
-
-@pytest.fixture
-def shop_page(page: Page) -> Page:
-    page.goto(DEMO_URL)
-    return page
-
-
-def test_storefront_exposes_two_products(shop_page: Page) -> None:
+@pytest.mark.smoke
+def test_storefront_exposes_two_products(shop_page) -> None:
     expect(shop_page.get_by_role("heading", name="Products")).to_be_visible()
     expect(shop_page.get_by_test_id("product-card")).to_have_count(2)
 
 
-def test_adding_a_notebook_updates_subtotal(shop_page: Page) -> None:
+def test_adding_a_notebook_updates_subtotal(shop_page) -> None:
     shop_page.get_by_test_id("add-notebook").click()
 
     expect(shop_page.get_by_test_id("cart-items")).to_contain_text("Notebook × 1")
     expect(shop_page.get_by_test_id("cart-total")).to_have_text("$8.50")
 
 
-def test_repeated_add_updates_quantity_and_total(shop_page: Page) -> None:
+def test_repeated_add_updates_quantity_and_total(shop_page) -> None:
     shop_page.get_by_test_id("add-notebook").click()
     shop_page.get_by_test_id("add-notebook").click()
 
@@ -35,7 +27,7 @@ def test_repeated_add_updates_quantity_and_total(shop_page: Page) -> None:
     expect(shop_page.get_by_test_id("cart-total")).to_have_text("$17.00")
 
 
-def test_removing_one_item_preserves_the_other(shop_page: Page) -> None:
+def test_removing_one_item_preserves_the_other(shop_page) -> None:
     shop_page.get_by_test_id("add-notebook").click()
     shop_page.get_by_test_id("add-pen").click()
     expect(shop_page.get_by_test_id("cart-total")).to_have_text("$10.50")
@@ -47,7 +39,7 @@ def test_removing_one_item_preserves_the_other(shop_page: Page) -> None:
     expect(shop_page.get_by_test_id("cart-total")).to_have_text("$2.00")
 
 
-def test_required_name_and_email_block_empty_checkout(shop_page: Page) -> None:
+def test_required_name_and_email_block_empty_checkout(shop_page) -> None:
     shop_page.get_by_test_id("place-order").click()
 
     name_valid = shop_page.locator("#customer-name").evaluate("(el) => el.validity.valid")
@@ -57,7 +49,7 @@ def test_required_name_and_email_block_empty_checkout(shop_page: Page) -> None:
     assert email_valid is False
 
 
-def test_empty_cart_shows_a_helpful_checkout_message(shop_page: Page) -> None:
+def test_empty_cart_shows_a_helpful_checkout_message(shop_page) -> None:
     shop_page.get_by_label("Full name").fill("Ada Example")
     shop_page.get_by_label("Email address").fill("ada@example.test")
     shop_page.get_by_test_id("place-order").click()
@@ -68,7 +60,7 @@ def test_empty_cart_shows_a_helpful_checkout_message(shop_page: Page) -> None:
     expect(shop_page.get_by_test_id("order-confirmation")).to_be_hidden()
 
 
-def test_valid_demo_order_shows_confirmation_and_clears_cart(shop_page: Page) -> None:
+def test_valid_demo_order_shows_confirmation_and_clears_cart(shop_page) -> None:
     shop_page.get_by_test_id("add-notebook").click()
     shop_page.get_by_test_id("add-pen").click()
     shop_page.get_by_label("Full name").fill("Ada Example")
